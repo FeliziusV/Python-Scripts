@@ -64,17 +64,24 @@ while 1:
     if ser.readline()!=None:
             try:
                 line = ser.readline()
+                line =line.decode('utf-8')
                 timestamp=getTime()
-                humidity=int(line.decode('utf-8'))/1023*100
-                humidity=round(humidity,2)
-                print(timestamp+" humidity: "+str(humidity))
+                values=line.split(" ")
+               
+                humidity_pot=int(values[0])/1023*100
+                humidity_pot=round(humidity_pot,2)
+                
+                humidity_air=float(values[1])
+                temperature=values[2];
+                print(timestamp+"- pot humidity: "+str(humidity_pot)+" air humidity: "+str(humidity_air)+" temperature: "+str(temperature))
              
                 #writeToFile(str(getTime())+" - "+line.decode('utf-8'))
             
-                insertVariblesIntoTable(timestamp,1,humidity)
+                insertVariblesIntoTable(timestamp,1,humidity_pot)
                 takePicture(plantid,timestamp)
                 time.sleep(300)
             except SerialException:
-                print ("error occured during reading")
+                print ("error ")
         
+
 
